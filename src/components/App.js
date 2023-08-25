@@ -2,21 +2,7 @@ import '../theme/App.css';
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
-
-const ImageList = ({imageInfoList}) => {
-  return (
-    <ul>
-      {imageInfoList.map((imageInfo) => (
-        <li key={ulid()}>
-          <>
-            <img width="500" src={imageInfo.base64data} />
-            <label>{imageInfo.object.name}</label>
-          </>
-        </li>
-      ))}
-    </ul>
-  );
-};
+import { ImageList } from "./ImageList";
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
@@ -41,7 +27,7 @@ function App() {
       <ImageList imageInfoList={fileInfoList} />
     </div>
   );
-}
+};
 
 function InputForm() {
   const { register, handleSubmit, formState: { errors, isDirty, isValid } } =
