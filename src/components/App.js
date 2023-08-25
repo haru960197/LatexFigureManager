@@ -1,33 +1,34 @@
 import '../theme/App.css';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
 
-const ImageList = (imageInfoList) => {
+const ImageList = ({imageInfoList}) => {
   return (
     <ul>
-      {imageList.map((imageInfo) => {
+      {imageInfoList.map((imageInfo) => (
         <li key={ulid()}>
-          <img src={imageInfo.base64data} />
+          <>
+            <img width="500" src={imageInfo.base64data} />
+            <label>{imageInfo.object.name}</label>
+          </>
         </li>
-      })}
+      ))}
     </ul>
   );
 };
 
 function App() {
-
-
-  const [fileInfo, setFileInfo] = useState({object: '', base64data: ''});
+  const [fileInfoList, setFileInfoList] = useState([]);
+  const inputRef = useRef(null);
   const handleChange = (e) => {
-    // fileInfo.object を上書き
-    setFileInfo((prevInfo) => ({ ...prevInfo, object: e.target.files[0] }));
+    const newFileObj = e.target.files[0];
     
     const reader = new FileReader();
     // ファイル読み込み成功時の処理を定義(ファイル読み込みは非同期処理のため)
     reader.onload = (e) => {
-      // fileInfo.base64data を上書き
-      setFileInfo((prevInfo) => ({ ...prevInfo, base64data: e.target.result}));
+      setFileInfoList((prevList) => [...prevList, 
+                    {id: ulid(), object: newFileObj, base64data: e.target.result}]);
     };
 
     // ファイル読み込み(非同期処理)
@@ -35,8 +36,9 @@ function App() {
   };
   return (
     <div className="App">
-      <input type="file" accept="image/*" onChange={handleChange}/>
-      <img width="500" src={fileInfo.base64data} />
+      <button onClick={() => inputRef.current.click()} >ファイルを選択</button>
+      <input hidden ref={inputRef} type="file" accept="image/*" onChange={handleChange}/>
+      <ImageList imageInfoList={fileInfoList} />
     </div>
   );
 }
