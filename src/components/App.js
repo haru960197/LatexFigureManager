@@ -4,25 +4,31 @@ import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 import { InputForm } from './InputForm';
+import { LatexFormat } from './LatexFormat';
 
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
+	// newFileObjはいらないので、newFileInfoに修正
   const [newFileObj, setNewFileObj] = useState({object: '', base64data: ''});
+	const [newFileInfo, setNewFileInfo] = useState(
+		{ id: '', object: '', base64data: '', caption: '', label: '' }
+	);
 
   const captionRef = useRef(null);
   const labelRef = useRef(null);
   const handleSubmit = () => {
 		if (!newFileObj.object) return;
 
-		const newfileInfo = {
+		const aNewFileInfo = {
 			id: ulid(),
 			object: newFileObj.object,
 			base64data: newFileObj.base64data,
 			caption: captionRef.current.value,
 			label: labelRef.current.value
 		}
-		setFileInfoList([...fileInfoList, newfileInfo]);
+		setNewFileInfo(aNewFileInfo);
+		setFileInfoList([...fileInfoList, aNewFileInfo]);
 
 		setNewFileObj({object: '', base64data: ''});
 		captionRef.current.value = "";
@@ -37,6 +43,7 @@ function App() {
 				setNewFileObj={setNewFileObj}
         handleSubmit={handleSubmit}
       />
+			<LatexFormat newFileInfo={newFileInfo} />
       <ImageList imageInfoList={fileInfoList} />
     </div>
   );
