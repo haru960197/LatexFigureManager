@@ -4,7 +4,7 @@ export const ImageList = ({imageInfoList}) => {
         {imageInfoList.map((imageInfo) => (
           <li key={imageInfo.id}>
             <>
-              <img width="500" src={imageInfo.base64data} />
+              <img width="300" src={imageInfo.base64data} />
               <label>{imageInfo.object.name}</label>
             </>
           </li>

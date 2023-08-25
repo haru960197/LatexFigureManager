@@ -4,24 +4,33 @@ import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 
-const InputForm = ({fileRef, captionRef, labelRef, handleSubmit}) => {
+const InputForm = ({captionRef, labelRef, setNewFileObj, handleSubmit}) => {
   const [imageFile, setImageFile] = useState(null);
+	const fileInputRef = useRef(null);
   const handleAddImageFile = (e) => {
+		if (!e.target.files[0]) return;
     const newFileObj = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (e) => {
-      setImageFile({object: newFileObj, base64data: e.target.result});
+      setImageFile(e.target.result);
+			setNewFileObj({object: newFileObj, base64data: e.target.result});
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+	const handleSubmitLocal = (e) => {
+		e.preventDefault();
+		if (!imageFile || !captionRef.current.value || !labelRef.current.value ) return;
+		setImageFile(null);
+		handleSubmit();
+	}
   return (
-    <form onSubmit={handleSubmit}>
-      <button onClick={() => fileRef.current.click()}>
+    <form onSubmit={handleSubmitLocal}>
+      <button onClick={() => fileInputRef.current.click()}>
         画像を選択
       </button>
       <input
         hidden
-        ref={fileRef}
+        ref={fileInputRef}
         type="file"
         accept="image/*"
         onChange={handleAddImageFile}
@@ -38,6 +47,7 @@ const InputForm = ({fileRef, captionRef, labelRef, handleSubmit}) => {
         <input id='label' type="text" ref={labelRef}/>
       </div>
 
+      <button type="reset" onClick={() => setImageFile(null)}>リセット</button>
       <button type="submit">追加</button>
     </form>
   );
@@ -45,24 +55,35 @@ const InputForm = ({fileRef, captionRef, labelRef, handleSubmit}) => {
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
-  const inputRef = useRef(null);
-  const handleChange = (e) => {
-    const newFileObj = e.target.files[0];
-    
-    const reader = new FileReader();
-    // ファイル読み込み成功時の処理を定義(ファイル読み込みは非同期処理のため)
-    reader.onload = (e) => {
-      setFileInfoList((prevList) => [...prevList, 
-                    {id: ulid(), object: newFileObj, base64data: e.target.result}]);
-    };
+  const [newFileObj, setNewFileObj] = useState({object: '', base64data: ''});
 
-    // ファイル読み込み(非同期処理)
-    reader.readAsDataURL(e.target.files[0]);
+  const captionRef = useRef(null);
+  const labelRef = useRef(null);
+  const handleSubmit = () => {
+		if (!newFileObj.object) return;
+
+		const newfileInfo = {
+			id: ulid(),
+			object: newFileObj.object,
+			base64data: newFileObj.base64data,
+			caption: captionRef.current.value,
+			label: labelRef.current.value
+		}
+		setFileInfoList([...fileInfoList, newfileInfo]);
+
+		setNewFileObj({object: '', base64data: ''});
+		captionRef.current.value = "";
+		labelRef.current.value = "";
   };
+
   return (
     <div className="App">
-      <button onClick={() => inputRef.current.click()} >ファイルを選択</button>
-      <input hidden ref={inputRef} type="file" accept="image/*" onChange={handleChange}/>
+      <InputForm 
+        captionRef={captionRef}
+        labelRef={labelRef}
+				setNewFileObj={setNewFileObj}
+        handleSubmit={handleSubmit}
+      />
       <ImageList imageInfoList={fileInfoList} />
     </div>
   );
