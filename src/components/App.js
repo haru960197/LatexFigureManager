@@ -1,8 +1,23 @@
 import '../theme/App.css';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ulid } from 'ulid';
+
+const ImageList = (imageInfoList) => {
+  return (
+    <ul>
+      {imageList.map((imageInfo) => {
+        <li key={ulid()}>
+          <img src={imageInfo.base64data} />
+        </li>
+      })}
+    </ul>
+  );
+};
 
 function App() {
+
+
   const [fileInfo, setFileInfo] = useState({object: '', base64data: ''});
   const handleChange = (e) => {
     // fileInfo.object を上書き
