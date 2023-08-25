@@ -4,6 +4,45 @@ import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 
+const InputForm = ({fileRef, captionRef, labelRef, handleSubmit}) => {
+  const [imageFile, setImageFile] = useState(null);
+  const handleAddImageFile = (e) => {
+    const newFileObj = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImageFile({object: newFileObj, base64data: e.target.result});
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <button onClick={() => fileRef.current.click()}>
+        画像を選択
+      </button>
+      <input
+        hidden
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        onChange={handleAddImageFile}
+      />
+      <img width="200" src={imageFile} />
+
+      <div>
+        <label htmlFor='caption'>キャプションを入力</label>
+        <input id='caption' type="text" ref={captionRef}/>
+      </div>
+
+      <div>
+        <label htmlFor='label'>ラベル名を入力</label>
+        <input id='label' type="text" ref={labelRef}/>
+      </div>
+
+      <button type="submit">追加</button>
+    </form>
+  );
+};
+
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
   const inputRef = useRef(null);
@@ -29,6 +68,9 @@ function App() {
   );
 };
 
+export default App;
+
+/*
 function InputForm() {
   const { register, handleSubmit, formState: { errors, isDirty, isValid } } =
     useForm({
@@ -89,5 +131,4 @@ function InputForm() {
     </div>
   );
 }
-
-export default App;
+*/
