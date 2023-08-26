@@ -1,22 +1,27 @@
 import { useState, useRef } from 'react';
 
-export const InputForm = ({captionRef, labelRef, setNewFileObj, handleSubmit}) => {
+export const InputForm = ({captionRef, labelRef, setNewFileInfo, handleSubmit}) => {
   const [imageFile, setImageFile] = useState(null);
 	const fileInputRef = useRef(null);
-  const handleAddImageFile = (e) => {
+  const handlePreviewImage = (e) => {
 		if (!e.target.files[0]) return;
     const newFileObj = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (e) => {
       setImageFile(e.target.result);
-			setNewFileObj({object: newFileObj, base64data: e.target.result});
+			setNewFileInfo((prevInfo) => 
+      ({...prevInfo, object: newFileObj, base64data: e.target.result}));
     };
     reader.readAsDataURL(e.target.files[0]);
   };
 	const handleSubmitLocal = (e) => {
 		e.preventDefault();
+    // 全ての要素が適切に入力されていることをチェック
 		if (!imageFile || !captionRef.current.value || !labelRef.current.value ) return;
+    
+    // プレビューを削除
 		setImageFile(null);
+    
 		handleSubmit();
 	}
   return (
@@ -29,7 +34,7 @@ export const InputForm = ({captionRef, labelRef, setNewFileObj, handleSubmit}) =
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        onChange={handleAddImageFile}
+        onChange={handlePreviewImage}
       />
       <img width="200" src={imageFile} />
 

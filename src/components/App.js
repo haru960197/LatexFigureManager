@@ -9,28 +9,28 @@ import { LatexFormat } from './LatexFormat';
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
-	// newFileObjはいらないので、newFileInfoに修正
-  const [newFileObj, setNewFileObj] = useState({object: '', base64data: ''});
 	const [newFileInfo, setNewFileInfo] = useState(
 		{ id: '', object: '', base64data: '', caption: '', label: '' }
 	);
-
   const captionRef = useRef(null);
   const labelRef = useRef(null);
+
   const handleSubmit = () => {
-		if (!newFileObj.object) return;
+    // 必要な情報がすべて入力されていることは
+    // InputForm.js内で保証されている
 
 		const aNewFileInfo = {
-			id: ulid(),
-			object: newFileObj.object,
-			base64data: newFileObj.base64data,
+			...newFileInfo,
+      id: ulid(),
 			caption: captionRef.current.value,
 			label: labelRef.current.value
 		}
+    
+    // 最後に追加したファイルの情報を更新
 		setNewFileInfo(aNewFileInfo);
+    // 新たなファイルをリストに追加
 		setFileInfoList([...fileInfoList, aNewFileInfo]);
 
-		setNewFileObj({object: '', base64data: ''});
 		captionRef.current.value = "";
 		labelRef.current.value = "";
   };
@@ -40,7 +40,7 @@ function App() {
       <InputForm 
         captionRef={captionRef}
         labelRef={labelRef}
-				setNewFileObj={setNewFileObj}
+				setNewFileInfo={setNewFileInfo}
         handleSubmit={handleSubmit}
       />
 			<LatexFormat newFileInfo={newFileInfo} />
