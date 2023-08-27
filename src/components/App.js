@@ -1,10 +1,9 @@
 import '../theme/App.css';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 import { InputForm } from './InputForm';
 import { LatexFormat } from './LatexFormat';
-
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);

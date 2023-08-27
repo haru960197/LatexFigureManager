@@ -15,7 +15,8 @@ export const InputForm = ({onSubmit}) => {
       base64data: '',
       caption: '',
       label: ''
-    }
+    },
+    criteriaMode: 'all'
   });
 
   const handlePreviewImage = (e) => {
@@ -71,10 +72,15 @@ export const InputForm = ({onSubmit}) => {
           id='label'
           type="text"
           {...register("label", {
-            required: "* ラベルの入力は必須です"
+            required: "* ラベルの入力は必須です",
+            pattern: {
+              value: /[ -~]+/,
+              message: "* ラベルは\"半角文字のみ\"で入力してください"
+            }
           })}
         />
-        {errors.label?.message && <div>{errors.label.message}</div>}
+        {errors.label?.types?.required && <div>{errors.label.types.required}</div>}
+        {errors.label?.types?.pattern && <div>{errors.label.types.pattern}</div>}
       </div>
 
       <button type="reset" onClick={() => setImageFile(null)}>リセット</button>
