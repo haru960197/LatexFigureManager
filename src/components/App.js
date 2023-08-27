@@ -1,6 +1,5 @@
 import '../theme/App.css';
 import { useState, useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 import { InputForm } from './InputForm';
@@ -12,37 +11,26 @@ function App() {
 	const [newFileInfo, setNewFileInfo] = useState(
 		{ id: '', object: '', base64data: '', caption: '', label: '' }
 	);
-  const captionRef = useRef(null);
-  const labelRef = useRef(null);
 
-  const onSubmit = () => {
-    // 必要な情報がすべて入力されていることは
-    // InputForm.js内で保証されている
-
-		const aNewFileInfo = {
-			...newFileInfo,
-      id: ulid(),
-			caption: captionRef.current.value,
-			label: labelRef.current.value
-		}
-    
-    // 最後に追加したファイルの情報を更新
-		setNewFileInfo(aNewFileInfo);
-    // 新たなファイルをリストに追加
-		setFileInfoList([...fileInfoList, aNewFileInfo]);
-
-		captionRef.current.value = "";
-		labelRef.current.value = "";
+  const onSubmit = (data) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const aNewFileInfo = {
+        id: ulid(),
+        object: data.file[0],
+        base64data: e.target.result,
+        caption: data.caption,
+        label: data.label
+      };
+      setNewFileInfo(aNewFileInfo);
+      setFileInfoList([...fileInfoList, aNewFileInfo]);
+    }
+		reader.readAsDataURL(data.file[0])
   };
 
   return (
     <div className="App">
-      <InputForm 
-        captionRef={captionRef}
-        labelRef={labelRef}
-				setNewFileInfo={setNewFileInfo}
-        onSubmit={handleSubmit}
-      />
+      <InputForm onSubmit={onSubmit}/>
 			<LatexFormat newFileInfo={newFileInfo} />
       <ImageList imageInfoList={fileInfoList} />
     </div>
