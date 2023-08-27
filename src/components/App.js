@@ -15,7 +15,7 @@ function App() {
   const captionRef = useRef(null);
   const labelRef = useRef(null);
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
     // 必要な情報がすべて入力されていることは
     // InputForm.js内で保証されている
 
@@ -41,7 +41,7 @@ function App() {
         captionRef={captionRef}
         labelRef={labelRef}
 				setNewFileInfo={setNewFileInfo}
-        handleSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       />
 			<LatexFormat newFileInfo={newFileInfo} />
       <ImageList imageInfoList={fileInfoList} />
