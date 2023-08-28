@@ -1,8 +1,10 @@
 import { Text, Textarea, Box, Button } from "@chakra-ui/react";
+import { useState } from "react";
 
 export const LatexFormat = ({ newFileInfo }) => {
     const { object, caption, label } = newFileInfo;
     const fileName = object.name;
+    const [buttonValue, setButtonValue] = useState("COPY");
     const content = fileName && caption && label
     ?
 `\\begin{figure}[H]
@@ -16,7 +18,9 @@ export const LatexFormat = ({ newFileInfo }) => {
     const handleCopyClick = async () => {
         try {
             await navigator.clipboard.writeText(content);
+            setButtonValue("COPIED");
             console.log("Copied successfully");
+            setTimeout(() => setButtonValue("COPY"), 2000);
         } catch {
             console.error("Failed to copy");
         }
@@ -43,9 +47,14 @@ export const LatexFormat = ({ newFileInfo }) => {
                     left="525px"
                     colorScheme='teal'
                     m="1.5"
-                    // postion="relative"
+                    minW="80px" // ボタンの最小幅を設定
+                    maxW="80px" // ボタンの最大幅を設定
+                    maxH="35px"
+                    whiteSpace="nowrap" // テキストがボタンの幅を超えて折り返さないようにする
+                    overflow="hidden" // テキストがボタンの幅を超えたときに隠す
+                    textOverflow="ellipsis" // テキストがボタンの幅を超えたら省略記号で表示
                     onClick={handleCopyClick}
-                >コピー</Button>
+                >{buttonValue}</Button>
             </Box>
         </>
     );
