@@ -1,4 +1,4 @@
-import '../theme/App.css';
+// import '../theme/App.css';
 import { useState } from 'react';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
