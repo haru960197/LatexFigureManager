@@ -1,4 +1,4 @@
-import { Text, Textarea, Box, Button, HStack } from "@chakra-ui/react";
+import { Text, Textarea, Box, Button } from "@chakra-ui/react";
 
 export const LatexFormat = ({ newFileInfo }) => {
     const { object, caption, label } = newFileInfo;
@@ -26,17 +26,27 @@ export const LatexFormat = ({ newFileInfo }) => {
         <>
             <Text htmlFor="latex" as="u" >Latex書式</Text>
 
-            <Box mt={1} bg="blackAlpha.700">
+            <Box mt={1} bg="transparent" borderRadius="md">
                 <Textarea
                     id="latex"
                     cols="65"
                     rows="6"
                     color="teal.200"
+                    backgroundColor="blackAlpha.900"
+                    border={false}
                     resize="none"
+                    isReadOnly={true}
                     value={content}
                 />
+                <Button
+                    bottom="145px"
+                    left="525px"
+                    colorScheme='teal'
+                    m="1.5"
+                    // postion="relative"
+                    onClick={handleCopyClick}
+                >コピー</Button>
             </Box>
-            <Button colorScheme='teal' mt={2} onClick={handleCopyClick} >コピー</Button>
         </>
     );
 };
