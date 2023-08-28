@@ -1,9 +1,12 @@
-// import '../theme/App.css';
+
 import { useState } from 'react';
 import { ulid } from 'ulid';
 import { ImageList } from "./ImageList";
 import { InputForm } from './InputForm';
 import { LatexFormat } from './LatexFormat';
+
+import { Container } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 
 function App() {
   const [fileInfoList, setFileInfoList] = useState([]);
@@ -28,11 +31,11 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <InputForm onSubmit={onSubmit}/>
+    <Container centerContent p={{ base: "4", md: "6" }} maxWidth="3xl">
+      <InputForm leftIcon={<AddIcon />} onSubmit={onSubmit}/>
 			<LatexFormat newFileInfo={newFileInfo} />
       <ImageList imageInfoList={fileInfoList} />
-    </div>
+    </Container>
   );
 };
 

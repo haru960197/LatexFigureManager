@@ -1,7 +1,16 @@
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import {
+  FormErrorMessage,
+  FormControl,
+  Input,
+  Button,
+  Image,
+  Container,
+  HStack
+} from '@chakra-ui/react';
 
-export const InputForm = ({onSubmit}) => {
+export const InputForm = ({leftIcon, onSubmit}) => {
   const [imageFile, setImageFile] = useState(null);
 	const fileInputRef = useRef(null);
   const {
@@ -30,61 +39,79 @@ export const InputForm = ({onSubmit}) => {
 
   // ファイルinput要素のための設定
   const { ref, ...rest } = register("file", {
-    required: "* ファイルを選択してください",
+    required: "ファイルを選択してください",
     onChange: handlePreviewImage
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <button onClick={() => fileInputRef.current.click()}>
-          画像を選択
-        </button>
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          ref={(e) => {
-            ref(e);
-            fileInputRef.current = e;
-          }}
-          {...rest}
-        />
-        {errors.file?.message && <div>{errors.file.message}</div>}
-        <img width="200" src={imageFile} />
-      </div>
+      <FormControl isInvalid={errors.file}>
+        <Container centerContent>
+          <Button mt={3} colorScheme='teal' onClick={() => fileInputRef.current.click()}>
+            画像を選択
+          </Button>
+          <Input
+            type="file"
+            accept="image/*"
+            hidden
+            ref={(e) => {
+              ref(e);
+              fileInputRef.current = e;
+            }}
+            {...rest}
+          />
+          <FormErrorMessage>
+            {errors.file?.message && errors.file.message}
+          </FormErrorMessage>
+          <Image width="300px" src={imageFile} />
+        </Container>
+      </FormControl>
 
-      <div>
-        <label htmlFor='caption'>キャプションを入力</label>
-        <input
+      <FormControl isInvalid={errors.caption}>
+        <Input
           id='caption'
           type="text"
+          placeholder='caption'
+          mt={3}
+          borderColor="teal"
+          borderWidth="1.5px"
           {...register("caption", {
-            required: "* キャプションの入力は必須です"
+            required: "キャプションの入力は必須です"
             })}
         />
-        {errors.caption?.message && <div>{errors.caption.message}</div>}
-      </div>
+        <FormErrorMessage>
+          {errors.caption && errors.caption.message}
+        </FormErrorMessage>
+      </FormControl>
 
-      <div>
-        <label htmlFor='label'>ラベル名を入力</label>
-        <input
+      <FormControl isInvalid={errors.label}>
+        <Input
           id='label'
           type="text"
+          placeholder='label'
+          borderColor={"teal"}
+          borderWidth="1.5px"
+          mt={3}
           {...register("label", {
-            required: "* ラベルの入力は必須です",
+            required: "ラベルの入力は必須です",
             pattern: {
               value: /[ -~]+/,
-              message: "* ラベルは\"半角文字のみ\"で入力してください"
+              message: "ラベルは\"半角文字のみ\"で入力してください"
             }
           })}
         />
-        {errors.label?.types?.required && <div>{errors.label.types.required}</div>}
-        {errors.label?.types?.pattern && <div>{errors.label.types.pattern}</div>}
-      </div>
+        <FormErrorMessage>
+          {errors.label?.types?.required && errors.label.types.required}
+          {errors.label?.types?.pattern && errors.label.types.pattern}
+        </FormErrorMessage>
+      </FormControl>
 
-      <button type="reset" onClick={() => setImageFile(null)}>リセット</button>
-      <button type="submit" disabled={!isValid}>追加</button>
+      <Container centerContent>
+        <HStack>
+          <Button type="reset" m={3} colorScheme='teal' onClick={() => setImageFile(null)}>リセット</Button>
+          <Button type="submit" m={3}  leftIcon={leftIcon} colorScheme='teal' disabled={!isValid}>追加</Button>
+        </HStack>
+      </Container>
     </form>
   );
 };
