@@ -63,7 +63,7 @@ export const InputForm = ({leftIcon, onSubmit}) => {
           <FormErrorMessage>
             {errors.file?.message && errors.file.message}
           </FormErrorMessage>
-          <Image width="300px" src={imageFile} />
+          <Image mt={3} width="300px" src={imageFile} />
         </Container>
       </FormControl>
 

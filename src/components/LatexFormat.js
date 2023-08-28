@@ -1,3 +1,5 @@
+import { Text, Textarea, Box, Button, HStack } from "@chakra-ui/react";
+
 export const LatexFormat = ({ newFileInfo }) => {
     const { object, caption, label } = newFileInfo;
     const fileName = object.name;
@@ -10,10 +12,31 @@ export const LatexFormat = ({ newFileInfo }) => {
     \\label{${label}}
 \\end{figure}`
     : '';
+
+    const handleCopyClick = async () => {
+        try {
+            await navigator.clipboard.writeText(content);
+            console.log("Copied successfully");
+        } catch {
+            console.error("Failed to copy");
+        }
+    };
+
     return (
         <>
-            <label htmlFor="latex">Latex書式</label>
-            <textarea id="latex" cols="65" rows="6" value={content} />
+            <Text htmlFor="latex" as="u" >Latex書式</Text>
+
+            <Box mt={1} bg="blackAlpha.700">
+                <Textarea
+                    id="latex"
+                    cols="65"
+                    rows="6"
+                    color="teal.200"
+                    resize="none"
+                    value={content}
+                />
+            </Box>
+            <Button colorScheme='teal' mt={2} onClick={handleCopyClick} >コピー</Button>
         </>
     );
 };
