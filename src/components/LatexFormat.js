@@ -32,7 +32,7 @@ export const LatexFormat = ({ newFileInfo }) => {
                     cols="65"
                     rows="6"
                     color="teal.200"
-                    backgroundColor="blackAlpha.900"
+                    backgroundColor="#031426"
                     border={false}
                     resize="none"
                     isReadOnly={true}
