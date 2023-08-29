@@ -34,7 +34,7 @@ function App() {
     <Container centerContent p={{ base: "4", md: "6" }} maxWidth="3xl">
       <InputForm leftIcon={<AddIcon />} onSubmit={onSubmit}/>
 			<LatexFormat newFileInfo={newFileInfo} />
-      <ImageList imageInfoList={fileInfoList} />
+      <ImageList fileInfoList={fileInfoList} setFileInfoList={setFileInfoList}/>
     </Container>
   );
 };
