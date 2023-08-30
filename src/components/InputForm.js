@@ -19,9 +19,7 @@ export const InputForm = ({leftIcon, onSubmit}) => {
     formState: { isValid, errors }
   } = useForm({
     defaultValues: {
-      id: '',
-      object: '',
-      base64data: '',
+      file: '',
       caption: '',
       label: ''
     },
