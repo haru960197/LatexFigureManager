@@ -1,6 +1,4 @@
-
-import { useState } from 'react';
-import { ulid } from 'ulid';
+import { useImageFile } from "../hooks/useImageFile";
 import { ImageList } from "./ImageList";
 import { InputForm } from './InputForm';
 import { LatexFormat } from './LatexFormat';
@@ -9,32 +7,29 @@ import { Container } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
 function App() {
-  const [fileInfoList, setFileInfoList] = useState([]);
-	const [newFileInfo, setNewFileInfo] = useState(
-		{ id: '', object: '', base64data: '', caption: '', label: '' }
-	);
+  const {
+		fileInfoList,
+		newFileInfo,
+		addFileInfoListItem,
+		upperShiftFileInfoListItem,
+		lowerShiftFileInfoListItem,
+    deleteFileInfoListItem
+	} = useImageFile();
 
-  const onSubmit = (data) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const aNewFileInfo = {
-        id: ulid(),
-        object: data.file[0],
-        base64data: e.target.result,
-        caption: data.caption,
-        label: data.label
-      };
-      setNewFileInfo(aNewFileInfo);
-      setFileInfoList([...fileInfoList, aNewFileInfo]);
-    }
-		reader.readAsDataURL(data.file[0])
+  const handleAddFileInfoListItem = (data) => {
+    addFileInfoListItem(data.file[0], data.caption, data.label);
   };
 
   return (
     <Container centerContent p={{ base: "4", md: "6" }} maxWidth="3xl">
-      <InputForm leftIcon={<AddIcon />} onSubmit={onSubmit}/>
+      <InputForm leftIcon={<AddIcon />} onSubmit={handleAddFileInfoListItem}/>
 			<LatexFormat newFileInfo={newFileInfo} />
-      <ImageList fileInfoList={fileInfoList} setFileInfoList={setFileInfoList}/>
+      <ImageList 
+        fileInfoList={fileInfoList}
+        upperShiftFileInfoListItem={upperShiftFileInfoListItem}
+	      lowerShiftFileInfoListItem={lowerShiftFileInfoListItem}
+        deleteFileInfoListItem={deleteFileInfoListItem}
+      />
     </Container>
   );
 };

@@ -10,40 +10,29 @@ import {
   Tooltip
 } from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
-export const ImageList = ({fileInfoList, setFileInfoList}) => { 
+export const ImageList = ({
+  fileInfoList,
+  upperShiftFileInfoListItem,
+	lowerShiftFileInfoListItem,
+  deleteFileInfoListItem
+}) => { 
 
-  const upperShiftItem = (id) => {
-    const index = fileInfoList.findIndex(fileInfo => fileInfo.id === id);
-    if (index === 0) return;
-    const newFileInfoList = fileInfoList.map((fileInfo, i) => {
-      if (i === index - 1) return fileInfoList[index];
-      else if (i === index) return fileInfoList[index - 1];
-      else return fileInfo;
-    });
-    setFileInfoList(newFileInfoList);
+  const handleUpperShift = async (id) => {
+    await upperShiftFileInfoListItem(id);
   };
 
-  const lowerShiftItem = async (id) => {
+  const handleLowerShift = async (id) => {
     const listItem = document.getElementById(`item-${id}`);
     if (!listItem) return;
 
-    const index = fileInfoList.findIndex(fileInfo => fileInfo.id === id);;
-    if (index === fileInfoList.length - 1) return;
-    await setFileInfoList((prevList) => {
-      const newFileInfoList = prevList.map((fileInfo, i) => {
-        if (i === index) return fileInfoList[index + 1];
-        else if (i === index + 1) return fileInfoList[index];
-        else return fileInfo;
-      });
-      return newFileInfoList;
-    });
+    await lowerShiftFileInfoListItem(id);
 
     // アイテムを移動した後、スクロール位置を調整する
     listItem.scrollIntoView({ behavior: "auto", block: "nearest" });
   };
 
-  const deleteItem = (id) => {
-    setFileInfoList((prevList) => prevList.filter((item) => item.id !== id));
+  const handleDeleteItem = async (id) => {
+    await deleteFileInfoListItem(id);
   };
   
   return (
@@ -76,19 +65,19 @@ export const ImageList = ({fileInfoList, setFileInfoList}) => {
               ml="4"
               icon={<ArrowUpIcon />}
               colorScheme="blue"
-              onClick={() => upperShiftItem(imageInfo.id)}
+              onClick={() => handleUpperShift(imageInfo.id)}
             />
             <IconButton
               ml="2"
               icon={<ArrowDownIcon/>}
               colorScheme="blue"
-              onClick={() => lowerShiftItem(imageInfo.id)}
+              onClick={() => handleLowerShift(imageInfo.id)}
             />
             <IconButton
               ml="2"
               icon={<DeleteIcon color="blackAlpha.900"/>}
               bg="gray.400"
-              onClick={() => deleteItem(imageInfo.id)}
+              onClick={() => handleDeleteItem(imageInfo.id)}
             />
           </Flex>
         </ListItem>
