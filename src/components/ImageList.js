@@ -3,9 +3,12 @@ import {
   ListItem,
   UnorderedList,
   Flex,
+  Spacer,
   Text,
   IconButton,
-  Container } from "@chakra-ui/react";
+  Container,
+  Tooltip
+} from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
 export const ImageList = ({fileInfoList, setFileInfoList}) => { 
 
@@ -56,33 +59,38 @@ export const ImageList = ({fileInfoList, setFileInfoList}) => {
           borderColor="gray.400"
         >
           <Container centerContent>
-            <img width="300" src={imageInfo.base64data} />
+            <Tooltip label={imageInfo.object.name} placement="top-end" fontSize="md">
+              <img width="300" src={imageInfo.base64data} />
+            </Tooltip>
             <Text mb="2">図{index + 1} : {imageInfo.caption}</Text>
-            <Flex align="center" justify="flex-end">
-              <UnorderedList>
-                <li>ファイル名: {imageInfo.object.name}</li>
-                <li>label: {imageInfo.label}</li>
-              </UnorderedList>
-              <IconButton
-                ml="4"
-                icon={<ArrowUpIcon />}
-                colorScheme="blue"
-                onClick={() => upperShiftItem(imageInfo.id)}
-              />
-              <IconButton
-                ml="2"
-                icon={<ArrowDownIcon/>}
-                colorScheme="blue"
-                onClick={() => lowerShiftItem(imageInfo.id)}
-              />
-              <IconButton
-                ml="2"
-                icon={<DeleteIcon color="blackAlpha.900"/>}
-                bg="gray.400"
-                onClick={() => deleteItem(imageInfo.id)}
-              />
-            </Flex>
           </Container>
+          <Flex align="center" justify="flex-end">
+            <Tooltip label="クリックでコピー" placement="auto">
+              <Text
+                fontSize="lg"
+                onClick={() => navigator.clipboard.writeText(imageInfo.label)}
+              >label : {imageInfo.label}</Text>
+            </Tooltip>
+            <Spacer />
+            <IconButton
+              ml="4"
+              icon={<ArrowUpIcon />}
+              colorScheme="blue"
+              onClick={() => upperShiftItem(imageInfo.id)}
+            />
+            <IconButton
+              ml="2"
+              icon={<ArrowDownIcon/>}
+              colorScheme="blue"
+              onClick={() => lowerShiftItem(imageInfo.id)}
+            />
+            <IconButton
+              ml="2"
+              icon={<DeleteIcon color="blackAlpha.900"/>}
+              bg="gray.400"
+              onClick={() => deleteItem(imageInfo.id)}
+            />
+          </Flex>
         </ListItem>
       ))}
     </List>
