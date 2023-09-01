@@ -1,8 +1,8 @@
 import { Text, Textarea, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
-export const LatexFormat = ({ newFileInfo }) => {
-    const { object, caption, label } = newFileInfo;
+export const LatexFormat = ({ newFigure }) => {
+    const { object, caption, label } = newFigure;
     const fileName = object.name;
     const [buttonValue, setButtonValue] = useState("COPY");
     const content = fileName && caption && label

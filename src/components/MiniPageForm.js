@@ -7,7 +7,7 @@ import {
 import { FigureForm } from './FigureForm';
 import { FormNumRadio  } from './FormNumRadio';
 
-export const MiniPageForm = ({leftIcon, onSubmit}) => {
+export const MiniPageForm = ({leftIcon, addFigureListItem}) => {
   const [formNum, setFormNum] = useState(1);
   const [figures, setFigures] = useState([
     {img: { data: null, info: null }, cap: '', label: ''},
@@ -95,8 +95,10 @@ export const MiniPageForm = ({leftIcon, onSubmit}) => {
   };
 
   const handleSubmit = () => {
-    console.log(figures);
-
+    figures.forEach((figure, index) => {
+      if (index > formNum - 1) return;
+      addFigureListItem(figure.img.info, figure.cap, figure.label);
+    });
     handleReset();
   };
 

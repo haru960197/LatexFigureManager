@@ -10,33 +10,33 @@ import {
 } from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
 export const ImageList = ({
-  fileInfoList,
-  upperShiftFileInfoListItem,
-	lowerShiftFileInfoListItem,
-  deleteFileInfoListItem
+  figureList,
+  upperShiftFigureListItem,
+	lowerShiftFigureListItem,
+  deleteFigureListItem
 }) => { 
 
   const handleUpperShift = async (id) => {
-    await upperShiftFileInfoListItem(id);
+    await upperShiftFigureListItem(id);
   };
 
   const handleLowerShift = async (id) => {
     const listItem = document.getElementById(`item-${id}`);
     if (!listItem) return;
 
-    await lowerShiftFileInfoListItem(id);
+    await lowerShiftFigureListItem(id);
 
     // アイテムを移動した後、スクロール位置を調整する
     listItem.scrollIntoView({ behavior: "auto", block: "nearest" });
   };
 
   const handleDeleteItem = async (id) => {
-    await deleteFileInfoListItem(id);
+    await deleteFigureListItem(id);
   };
   
   return (
     <List>
-      {fileInfoList.map((imageInfo, index) => (
+      {figureList.map((imageInfo, index) => (
         <ListItem 
           key={imageInfo.id}
           id={`item-${imageInfo.id}`}
@@ -48,7 +48,7 @@ export const ImageList = ({
         >
           <Container centerContent>
             <Tooltip label={imageInfo.object.name} placement="top-end" fontSize="md">
-              <img width="300" src={imageInfo.base64data} />
+              <img width="250" src={imageInfo.base64data} />
             </Tooltip>
             <Text mb="2">図{index + 1} : {imageInfo.caption}</Text>
           </Container>
