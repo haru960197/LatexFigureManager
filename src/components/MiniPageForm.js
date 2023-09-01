@@ -5,8 +5,10 @@ import {
   HStack
 } from '@chakra-ui/react';
 import { FigureForm } from './FigureForm';
+import { FormNumRadio  } from './FormNumRadio';
 
-export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
+export const MiniPageForm = ({leftIcon, onSubmit}) => {
+  const [formNum, setFormNum] = useState(1);
   const [figures, setFigures] = useState([
     {img: { data: null, info: null }, cap: '', label: ''},
     {img: { data: null, info: null }, cap: '', label: ''},
@@ -75,7 +77,6 @@ export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
 
   const isValid = () => {
     let ret = true;
-
     for (let i = 0; i < formNum; i++) {
       const data = figures[i];
       ret &= data.img.info !== null;
@@ -101,6 +102,10 @@ export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
 
   return (
     <Container centerContent>
+      <FormNumRadio
+        formNum={String(formNum)}
+        onRadioChange={value => setFormNum(Number(value))}
+      />
       <HStack>
         {dataToInputForm(figures[0], 0)}
         {formNum >= 2 && dataToInputForm(figures[1], 1)}
