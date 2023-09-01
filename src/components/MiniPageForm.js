@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { FigureForm } from './FigureForm';
 
-export const MiniPageForm = ({leftIcon, onSubmit}) => {
+export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
   const [figures, setFigures] = useState([
     {img: { data: null, info: null }, cap: '', label: ''},
     {img: { data: null, info: null }, cap: '', label: ''},
@@ -75,16 +75,21 @@ export const MiniPageForm = ({leftIcon, onSubmit}) => {
 
   const isValid = () => {
     let ret = true;
+
+    for (let i = 0; i < formNum; i++) {
+      const data = figures[i];
+      ret &= data.img.info !== null;
+      ret &= data.cap !== '';
+      ret &= data.label !== '' && /[ -~]+/.test(data.label);
+    }
+    /*
     figures.forEach((data) => {
       ret &= data.img.info !== null;
       ret &= data.cap !== '';
       ret &= data.label !== '' && /[ -~]+/.test(data.label);
     });
+    */
     return ret;
-  };
-
-  const handleSubmit = () => {
-    console.log(figures);
   };
 
   const handleReset = () => {
@@ -95,12 +100,16 @@ export const MiniPageForm = ({leftIcon, onSubmit}) => {
     ]);
   };
 
+  const handleSubmit = () => {
+    console.log(figures);
+  };
+
   return (
     <Container centerContent>
       <HStack>
         {dataToInputForm(figures[0], 0)}
-        {dataToInputForm(figures[1], 1)}
-        {dataToInputForm(figures[2], 2)}
+        {formNum >= 2 && dataToInputForm(figures[1], 1)}
+        {formNum >= 3 && dataToInputForm(figures[2], 2)}
       </HStack>
       <HStack>
         <Button m={3} colorScheme='teal' onClick={handleReset}>リセット</Button>
