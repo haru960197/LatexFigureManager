@@ -82,13 +82,6 @@ export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
       ret &= data.cap !== '';
       ret &= data.label !== '' && /[ -~]+/.test(data.label);
     }
-    /*
-    figures.forEach((data) => {
-      ret &= data.img.info !== null;
-      ret &= data.cap !== '';
-      ret &= data.label !== '' && /[ -~]+/.test(data.label);
-    });
-    */
     return ret;
   };
 
@@ -102,6 +95,8 @@ export const MiniPageForm = ({leftIcon, formNum = 3, onSubmit}) => {
 
   const handleSubmit = () => {
     console.log(figures);
+
+    handleReset();
   };
 
   return (
