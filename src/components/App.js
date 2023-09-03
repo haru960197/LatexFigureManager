@@ -1,6 +1,5 @@
 import { useFigureList } from "../hooks/useFigureList";
 import { ImageList } from "./ImageList";
-import { InputForm } from './InputForm';
 import { LatexFormat } from './LatexFormat';
 import { MiniPageForm } from "./MiniPageForm";
 import { Container } from "@chakra-ui/react";
