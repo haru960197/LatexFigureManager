@@ -9,7 +9,7 @@ function App() {
   const {
 		figureList,
 		newFigure,
-		addFigureListItem,
+		addFigureListItems,
 		upperShiftFigureListItem,
 		lowerShiftFigureListItem,
     deleteFigureListItem
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Container centerContent p={{ base: "4", md: "6" }} maxWidth="3xl">
-      <MiniPageForm leftIcon={<AddIcon />} addFigureListItem={addFigureListItem} />
+      <MiniPageForm leftIcon={<AddIcon />} addFigureListItems={addFigureListItems} />
 			<LatexFormat newFigure={newFigure} />
       <ImageList 
         figureList={figureList}

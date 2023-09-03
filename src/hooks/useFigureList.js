@@ -4,14 +4,15 @@ import { ulid } from 'ulid';
 export const useFigureList = () => {
     const [figureList, setFigureList] = useState([]);
 	const [newFigure, setNewFigure] = useState(
-		{ id: '', object: '', base64data: '', caption: '', label: '' }
+		{ id: '', groupId: '', object: '', base64data: '', caption: '', label: '' }
 	);
 
-    const addFigureListItem = (fileInfoObj, caption, label) => {
+    const addFigureListItem = (groupId, fileInfoObj, caption, label) => {
 		const reader = new FileReader();
 		reader.onload = (e) => {
 			const aNewFileInfo = {
 				id: ulid(),
+				groupId: groupId,
 				object: fileInfoObj,
 				base64data: e.target.result,
 				caption: caption,
@@ -21,6 +22,13 @@ export const useFigureList = () => {
 			setFigureList((prevList) => [...prevList, aNewFileInfo]);
 		};
 		reader.readAsDataURL(fileInfoObj)
+	};
+
+	const addFigureListItems = (figureArray) => {
+		const groupId = ulid();
+		figureArray.forEach((figure) => {
+			addFigureListItem(groupId, figure.img.info, figure.cap, figure.label);
+		});
 	};
 
 	const upperShiftFigureListItem = (id) => {
@@ -54,7 +62,7 @@ export const useFigureList = () => {
 	return {
 		figureList,
 		newFigure,
-		addFigureListItem,
+		addFigureListItems,
 		upperShiftFigureListItem,
 		lowerShiftFigureListItem,
 		deleteFigureListItem
