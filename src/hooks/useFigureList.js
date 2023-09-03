@@ -4,14 +4,14 @@ import { ulid } from 'ulid';
 export const useFigureList = () => {
     const [figureList, setFigureList] = useState([]);
 	const [newFigures, setNewFigures] = useState([
-		{ id: '', groupId: '', object: '', base64data: '', caption: '', label: '' }
+		// { id: '', groupId: '', object: '', base64data: '', caption: '', label: '' }
 	]);
 
     const addFigureListItem = (groupId, fileInfoObj, caption, label) => {
 		if (!groupId || !fileInfoObj || !caption || !label) {
 			console.error(`Error: at addFigureListItem
 			Some of these properties may be null.
-			
+
 			groupId: ${groupId}
 			fileInfoObj: ${fileInfoObj}
 			caption: ${caption}
