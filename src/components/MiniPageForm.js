@@ -94,8 +94,8 @@ export const MiniPageForm = ({leftIcon, addFigureListItems}) => {
     ]);
   };
 
-  const handleSubmit = () => {
-    addFigureListItems(figures.slice(0, formNum));
+  const handleSubmit = async () => {
+    await addFigureListItems(figures.slice(0, formNum));
     handleReset();
   };
 
