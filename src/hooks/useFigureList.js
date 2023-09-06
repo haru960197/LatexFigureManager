@@ -4,44 +4,34 @@ import { ulid } from 'ulid';
 export const useFigureList = () => {
     const [figureList, setFigureList] = useState([]);
 	const [newFigures, setNewFigures] = useState([
-		// { id: '', groupId: '', object: '', base64data: '', caption: '', label: '' }
+		// { id: '', object: '', base64data: '', caption: '', label: '' }
 	]);
 
-    const addFigureListItem = (groupId, fileInfoObj, caption, label) => {
-		if (!groupId || !fileInfoObj || !caption || !label) {
-			console.error(`Error: at addFigureListItem
-			Some of these properties may be null.
+	const addFigureListItems = async (figureArray) => {
 
-			groupId: ${groupId}
-			fileInfoObj: ${fileInfoObj}
-			caption: ${caption}
-			label: ${label}`);
-			return;
+		function readFigureImgData(figure) {
+			return new Promise((resolve) => {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const aNewFigure = {
+						id: ulid(),
+						object: figure.img.info,
+						base64data: e.target.result,
+						caption: figure.cap,
+						label: figure.label
+					};
+					resolve(aNewFigure);
+				};
+				reader.readAsDataURL(figure.img.info);
+			});
 		}
-		const reader = new FileReader();
-		reader.onload = (e) => {
-			const aNewFigure = {
-				id: ulid(),
-				groupId: groupId,
-				object: fileInfoObj,
-				base64data: e.target.result,
-				caption: caption,
-				label: label
-			};
-			setNewFigures((prevNewFigures) => [...prevNewFigures, aNewFigure]);
-			setFigureList((prevList) => [...prevList, aNewFigure]);
-		};
-		reader.readAsDataURL(fileInfoObj)
-	};
 
-	const addFigureListItems = (figureArray) => {
-		// newFiguresを初期化
-		setNewFigures([]);
-
-		const groupId = ulid();
-		figureArray.forEach((figure) => {
-			addFigureListItem(groupId, figure.img.info, figure.cap, figure.label);
-		});
+		const figurePromises = figureArray.map((figure) => readFigureImgData(figure));
+		Promise.all(figurePromises)
+			.then((newFigureListItem) => {
+				setFigureList((prevList) => [...prevList, newFigureListItem]);
+				setNewFigures(newFigureListItem);
+			})
 	};
 
 	const upperShiftFigureListItem = (id) => {
