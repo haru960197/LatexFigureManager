@@ -6,7 +6,10 @@ import {
   Text,
   IconButton,
   Container,
-  Tooltip
+  Tooltip,
+  VStack,
+  HStack,
+  Box
 } from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
@@ -18,48 +21,58 @@ const ImageListItem = ({
   onDeleteIconClick
 }) => {
   return (
-    <ListItem
+    <Box
           id={`item-${figure.id}`}
           borderWidth="4px"
-          p="4"
+          p="2"
           mt="4"
           borderRadius="md"
           borderColor="gray.400"
+          w="18rem" // 288px
+          h="18rem" // 288px
         >
           <Container centerContent>
             <Tooltip label={figure.object.name} placement="top-end" fontSize="md">
-              <img width="250" src={figure.base64data} />
+              <img
+                src={figure.base64data}
+                alt={figure.object.name}
+                style={{ maxWidth: "250px", maxHeight:"190px"}}
+              />
             </Tooltip>
-            <Text mb="2">図{index + 1} : {figure.caption}</Text>
+            <Text fontSize="16px" mb="2">図{index + 1} : {figure.caption}</Text>
+          
+            <Flex align="center" justify="flex-end">
+              <Tooltip label="クリックでコピー" placement="auto">
+                <Text
+                  fontSize="16px"
+                  onClick={() => navigator.clipboard.writeText(figure.label)}
+                >label<br/>{figure.label}</Text>
+              </Tooltip>
+              <Spacer />
+              <IconButton
+                ml="4"
+                size="sm"
+                icon={<ArrowUpIcon />}
+                colorScheme="blue"
+                onClick={onUpIconClick}
+              />
+              <IconButton
+                ml="2"
+                size="sm"
+                icon={<ArrowDownIcon/>}
+                colorScheme="blue"
+                onClick={onDownIconClick}
+              />
+              <IconButton
+                ml="2"
+                size="sm"
+                icon={<DeleteIcon color="blackAlpha.900"/>}
+                bg="gray.400"
+                onClick={onDeleteIconClick}
+              />
+            </Flex>
           </Container>
-          <Flex align="center" justify="flex-end">
-            <Tooltip label="クリックでコピー" placement="auto">
-              <Text
-                fontSize="lg"
-                onClick={() => navigator.clipboard.writeText(figure.label)}
-              >label : {figure.label}</Text>
-            </Tooltip>
-            <Spacer />
-            <IconButton
-              ml="4"
-              icon={<ArrowUpIcon />}
-              colorScheme="blue"
-              onClick={onUpIconClick}
-            />
-            <IconButton
-              ml="2"
-              icon={<ArrowDownIcon/>}
-              colorScheme="blue"
-              onClick={onDownIconClick}
-            />
-            <IconButton
-              ml="2"
-              icon={<DeleteIcon color="blackAlpha.900"/>}
-              bg="gray.400"
-              onClick={onDeleteIconClick}
-            />
-          </Flex>
-        </ListItem>
+        </Box>
   )
 }
 
@@ -69,6 +82,8 @@ function divideIntoGroup(figureList) {
   let groupId = '';
   
   figureList.forEach((figure, index) => {
+    // indexプロパティを追加
+    figure.index = index;
     if (figure.groupId == groupId) {
       bufferList.push(figure);
     } else {
@@ -80,6 +95,7 @@ function divideIntoGroup(figureList) {
     }
   })
 
+  console.log(organizedList);
   return organizedList;
 }
 
@@ -89,8 +105,6 @@ export const ImageList = ({
 	lowerShiftFigureListItem,
   deleteFigureListItem
 }) => {
-  const groupedFigureList = divideIntoGroup(figureList);
-
   const handleUpperShift = async (id) => {
     await upperShiftFigureListItem(id);
   };
@@ -110,17 +124,21 @@ export const ImageList = ({
   };
   
   return (
-    <List>
-      {figureList.map((figure, index) => (
-        <ImageListItem
-          key={figure.id}
-          figure={figure}
-          index={index}
-          onUpIconClick={() => handleUpperShift(figure.id)}
-          onDownIconClick={() => handleLowerShift(figure.id)}
-          onDeleteIconClick={() => handleDeleteItem(figure.id)}
-        />
+    <Container centerContent maxW="100%">
+      {figureList.map((figures, index) => (
+        <HStack maxW="100%" key={index}>
+          {figures.map((figure) => (
+            <ImageListItem
+              key={figure.id}
+              figure={figure}
+              index={figure.index}
+              onUpIconClick={() => handleUpperShift(figure.id)}
+              onDownIconClick={() => handleLowerShift(figure.id)}
+              onDeleteIconClick={() => handleDeleteItem(figure.id)}
+            />
+          ))}
+        </HStack>
       ))}
-    </List>
+    </Container>
   );
 };
