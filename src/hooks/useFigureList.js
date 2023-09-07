@@ -34,7 +34,45 @@ export const useFigureList = () => {
 			})
 	};
 
+	const findDetailedIndex = (id) => {
+		/*
+			figureList = [
+							[1, 2],
+							[3, 4, 5],
+							[7]
+			]
+			findDetailedIndex(5) => [1, 2]
+		*/
+		const retArray = [-1, -1];
+		figureList.forEach((figures, i) => {
+			const j = figures.findIndex((figure) => figure.id === id);
+			if (j !== -1) {
+				retArray[0] = i;
+				retArray[1] = j;
+			}
+		});
+		return retArray;
+	}
+
 	const upperShiftFigureListItem = (id) => {
+		/*
+		const [i, j] = findDetailedIndex(id);
+		if (i === -1 && j === -1) return;
+
+		let newFigureList = null;
+		if (j === 0) {
+			// 要素はgroupの先頭の要素 [[ -> 1], [ -> 2, 4, 6], ...]
+			if (i === 0) return;
+			if (figureList[i].length === 1) {
+				// -> [1]
+				newFigureList = [...figureList];
+				newFigureList.splice(i, 0, figureList[i][0]);
+				newFigureList[i + 1].splice(0, 1);
+			} else {
+
+			}
+		}	
+
 		const index = figureList.findIndex(fileInfo => fileInfo.id === id);
 		if (index === 0) return;
 		const newFileInfoList = figureList.map((fileInfo, i) => {
@@ -43,9 +81,11 @@ export const useFigureList = () => {
 		  else return fileInfo;
 		});
 		setFigureList(newFileInfoList);
+		*/
   	};
 
 	const lowerShiftFigureListItem = (id) => {
+		/*
     	const index = figureList.findIndex(fileInfo => fileInfo.id === id);;
     	if (index === figureList.length - 1) return;
 		const newFileInfoList = figureList.map((fileInfo, i) => {
@@ -54,12 +94,18 @@ export const useFigureList = () => {
 			else return fileInfo;
 		});
     	setFigureList(newFileInfoList);
+		*/
   	};
 
 	const deleteFigureListItem = (id) => {
-		setFigureList((prevList) => (
-			prevList.filter((fileInfo) => fileInfo.id !== id)
-		));
+		const [i, j] = findDetailedIndex(id);
+		if ([i, j].toString() === [-1, -1].toString()) {
+			console.error("id: " + id + " does not exist in the list");
+			return;
+		}
+		const newFigureList = [...figureList];
+		newFigureList[i].splice(j, 1);
+		setFigureList(newFigureList);
 	};
 
 	return {
