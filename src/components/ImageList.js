@@ -128,7 +128,7 @@ export const ImageList = ({
   
   return (
     <Container centerContent maxW="100%">
-      {figureList.map((figures, index) => (
+      {figureList.map((figures) => (
         <HStack maxW="100%" maxH="300px" key={index}>
           {figures.map((figure) => (
             <ImageListItem
