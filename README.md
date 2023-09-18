@@ -9,6 +9,9 @@ LaTeXでレポートなどの図を伴う文書を作成する際に、各図の
 
 ![upload](https://github.com/haru960197/LatexFigureManager/assets/124692504/3bb5e403-a1f5-4c70-953a-6142c0d42294)
 
+画像ファイルは、ltxファイルと同じ階層にpicディレクトリを作成し、そこからアップロードすることが望ましいです。
+（出力されるlatexコードではその前提で相対パスを指定するため。）
+
 ## 2 それぞれキャプションとラベルを入力
 
 ![validation](https://github.com/haru960197/LatexFigureManager/assets/124692504/9ebd6dab-30e4-417c-a825-ce288aacfa75)
