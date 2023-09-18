@@ -1,3 +1,10 @@
+# 概要
+
+LaTeXでレポートなどの図を伴う文書を作成する際に、各図のラベルがわからなくならないように管理するためのウェブアプリケーションです。
+また、必要項目を埋めると、.ltxファイルで図を挿入するためのコードを出力します。
+
+***
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
