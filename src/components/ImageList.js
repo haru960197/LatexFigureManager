@@ -48,6 +48,7 @@ const ImageListItem = ({
                   >label: {figure.label}</Text>
                 </Tooltip>
                 <Spacer/>
+                {/*
                 <IconButton
                   ml="2"
                   size="sm"
@@ -62,6 +63,7 @@ const ImageListItem = ({
                   colorScheme="blue"
                   onClick={onDownIconClick}
                 />
+                */}
                 <IconButton
                   ml="2"
                   size="sm"
