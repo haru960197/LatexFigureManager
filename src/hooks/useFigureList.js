@@ -4,8 +4,38 @@ import { ulid } from 'ulid';
 export const useFigureList = () => {
     const [figureList, setFigureList] = useState([]);
 	const [newFigures, setNewFigures] = useState([
-		// { id: '', object: '', base64data: '', caption: '', label: '' }
+		// { id: '', object: '', base64data: '', caption: '', label: '', number: '' }
 	]);
+
+	function renewFigureNumber(figureList) {
+		let curNumber = 1;
+		figureList.forEach((figures) => {
+			figures.forEach((figure) => {
+				figure.number = curNumber;
+				curNumber++;
+			});
+		});
+	}
+
+	function findDetailedIndex(id) {
+		/*
+			figureList = [
+							[1, 2],
+							[3, 4, 5],
+							[7]
+			]
+			findDetailedIndex(5) => [1, 2]
+		*/
+		const retArray = [-1, -1];
+		figureList.forEach((figures, i) => {
+			const j = figures.findIndex((figure) => figure.id === id);
+			if (j !== -1) {
+				retArray[0] = i;
+				retArray[1] = j;
+			}
+		});
+		return retArray;
+	}
 
 	const addFigureListItems = async (figureArray) => {
 
@@ -29,30 +59,12 @@ export const useFigureList = () => {
 		const figurePromises = figureArray.map((figure) => readFigureImgData(figure));
 		Promise.all(figurePromises)
 			.then((newFigureListItem) => {
-				setFigureList((prevList) => [...prevList, newFigureListItem]);
+				const newFigureList = [...figureList, newFigureListItem];
+				renewFigureNumber(newFigureList);
+				setFigureList(newFigureList);
 				setNewFigures(newFigureListItem);
 			})
 	};
-
-	const findDetailedIndex = (id) => {
-		/*
-			figureList = [
-							[1, 2],
-							[3, 4, 5],
-							[7]
-			]
-			findDetailedIndex(5) => [1, 2]
-		*/
-		const retArray = [-1, -1];
-		figureList.forEach((figures, i) => {
-			const j = figures.findIndex((figure) => figure.id === id);
-			if (j !== -1) {
-				retArray[0] = i;
-				retArray[1] = j;
-			}
-		});
-		return retArray;
-	}
 
 	const upperShiftFigureListItem = (id) => {
 		/*
@@ -105,6 +117,7 @@ export const useFigureList = () => {
 		}
 		const newFigureList = [...figureList];
 		newFigureList[i].splice(j, 1);
+		renewFigureNumber(newFigureList);
 		setFigureList(newFigureList);
 	};
 

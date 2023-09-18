@@ -15,7 +15,6 @@ import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const ImageListItem = ({
   figure,
-  index,
   onUpIconClick,
   onDownIconClick,
   onDeleteIconClick
@@ -40,7 +39,7 @@ const ImageListItem = ({
                   style={{ maxWidth: "250px", maxHeight:"190px"}}
                 />
               </Tooltip>
-              <Text fontSize="16px" mb="4px">図{index + 1} : {figure.caption}</Text>
+              <Text fontSize="16px" mb="4px">図{figure.number} : {figure.caption}</Text>
             </Container>
           
             <Container>
@@ -128,13 +127,12 @@ export const ImageList = ({
   
   return (
     <Container centerContent maxW="100%">
-      {figureList.map((figures) => (
+      {figureList.map((figures, index) => (
         <HStack maxW="100%" maxH="300px" key={index}>
           {figures.map((figure) => (
             <ImageListItem
               key={figure.id}
               figure={figure}
-              index={figure.index}
               onUpIconClick={() => handleUpperShift(figure.id)}
               onDownIconClick={() => handleLowerShift(figure.id)}
               onDeleteIconClick={() => handleDeleteItem(figure.id)}
