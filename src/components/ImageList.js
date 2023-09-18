@@ -1,6 +1,4 @@
 import {
-  List,
-  ListItem,
   Flex,
   Spacer,
   Text,
@@ -8,8 +6,7 @@ import {
   Container,
   Tooltip,
   VStack,
-  HStack,
-  Box
+  HStack
 } from "@chakra-ui/react";
 import { ArrowUpIcon, ArrowDownIcon, DeleteIcon } from "@chakra-ui/icons";
 
