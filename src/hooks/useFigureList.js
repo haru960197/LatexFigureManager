@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { ulid } from 'ulid';
 
 export const useFigureList = () => {
-    const [figureList, setFigureList] = useState([]);
+    const [figureList, setFigureList] = useState(
+		localStorage.getItem('figureList')
+			? JSON.parse(localStorage.getItem('figureList'))
+			: []
+	);
 	const [newFigures, setNewFigures] = useState([
 		// { id: '', object: '', base64data: '', caption: '', label: '', number: '' }
 	]);
@@ -62,6 +66,7 @@ export const useFigureList = () => {
 				const newFigureList = [...figureList, newFigureListItem];
 				renewFigureNumber(newFigureList);
 				setFigureList(newFigureList);
+				localStorage.setItem('figureList', JSON.stringify(newFigureList));
 				setNewFigures(newFigureListItem);
 			})
 	};
@@ -119,6 +124,7 @@ export const useFigureList = () => {
 		newFigureList[i].splice(j, 1);
 		renewFigureNumber(newFigureList);
 		setFigureList(newFigureList);
+		localStorage.setItem('figureList', JSON.stringify(newFigureList));
 	};
 
 	return {
