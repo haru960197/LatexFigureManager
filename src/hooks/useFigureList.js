@@ -115,13 +115,19 @@ export const useFigureList = () => {
   	};
 
 	const deleteFigureListItem = (id) => {
+		function removeEmptyArray(figureList) {
+			const newFigureList = figureList.filter((figures) => figures.length > 0);
+			return newFigureList;
+		}
+
 		const [i, j] = findDetailedIndex(id);
 		if ([i, j].toString() === [-1, -1].toString()) {
 			console.error("id: " + id + " does not exist in the list");
 			return;
 		}
-		const newFigureList = [...figureList];
+		let newFigureList = [...figureList];
 		newFigureList[i].splice(j, 1);
+		newFigureList = removeEmptyArray(newFigureList);
 		renewFigureNumber(newFigureList);
 		setFigureList(newFigureList);
 		localStorage.setItem('figureList', JSON.stringify(newFigureList));
