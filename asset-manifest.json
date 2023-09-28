@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/LatexFigureManager/static/js/main.37ab1595.js",
+    "main.js": "/LatexFigureManager/static/js/main.e371b282.js",
     "index.html": "/LatexFigureManager/index.html",
-    "main.37ab1595.js.map": "/LatexFigureManager/static/js/main.37ab1595.js.map"
+    "main.e371b282.js.map": "/LatexFigureManager/static/js/main.e371b282.js.map"
   },
   "entrypoints": [
-    "static/js/main.37ab1595.js"
+    "static/js/main.e371b282.js"
   ]
 }
