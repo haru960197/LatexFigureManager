@@ -40,10 +40,3 @@ https://haru960197.github.io/LatexFigureManager/
 また、ラベル部分をクリックすることでラベルがクリップボードにコピーされます。
 右下のゴミ箱のアイコンをクリックすることでアイテムがリストから削除されます。
 
-
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
