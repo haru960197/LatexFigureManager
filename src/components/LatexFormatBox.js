@@ -50,6 +50,7 @@ function latexFormatString(newFigures) {
             \\includegraphics[width=1.0\\textwidth]{pic/${figures[1].fileName}}
             \\caption{${figures[1].caption}}
             \\label{${figures[1].label}}
+        \\end{minipage} &
         \\begin{minipage}[t]{0.3\\textwidth}
             \\centering
             \\includegraphics[width=1.0\\textwidth]{pic/${figures[2].fileName}}
